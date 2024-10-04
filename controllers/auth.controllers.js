@@ -3,6 +3,7 @@ write the logic to signup the user
 */
 const user_model=require("../models/user.model")
 const bcrypt=require("bcryptjs")
+const jwt=require("jsonwebtoken")
 
 
 
@@ -38,3 +39,32 @@ try{
         message:" some error while regiserting the user"})
 }
 }
+ //responce back to user for signin
+ exports.signin= async (res,req)=>{
+ //user id present in the system 
+ const user= await user_model.findOne({userId:req.body.userId})
+ if (user==null){
+    return res.status(400).send({
+        message:"user id passed is not vaild user id "
+    })
+ }
+//check password is correct
+const ispasswordvalid=bcrypt.comparesync(req.body.password,user.password)
+if(!ispasswordvalid){
+   return res.status(401).send({
+        message:"worng password passed"
+    })
+}
+//passed the token 
+const token =jwt.sign({id:user.userId},"my abc secret ",{
+    expiresIn:120
+})
+res.status(200).send({
+    name:user.name,
+    userId:user.userId,
+    email:user.email,
+    userType:user.userType,
+    accessToken:token
+
+})
+ }

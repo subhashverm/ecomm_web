@@ -25,7 +25,7 @@ email:{
 userType:{
     type: String,
     default:"customer",
-    enum:["customer","admin"],
+    enum:["CUSTOMER","ADMIN"],
     requried:true
 }
 },{timestamps:true,versionKey:false})

@@ -33,7 +33,7 @@ db.once("open",()=>{
     name:"subhash",
     userId:"admin",
     Email:"subverma8090@gmail.com",
-    userType:"admin",
+    userType:"ADMIN",
     password:bcrypt.hashSync("welcome",8)
   })
   console.log("admin created",user)
@@ -46,6 +46,7 @@ db.once("open",()=>{
  */
 require("./routes/auth.route")(app)
 /**
+ * 
  * start the  server
  */
 app.listen(server_configs.PORT,()=>{
