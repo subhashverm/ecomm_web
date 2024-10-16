@@ -40,16 +40,16 @@ try{
 }
 }
  //responce back to user for signin
- exports.signin= async (res,req)=>{
+ exports.signin= async (req,res)=>{
  //user id present in the system 
- const user= await user_model.findOne({userId:req.body.userId})
+ const user= await user_model.findOne({userId: req.body.userId})
  if (user==null){
     return res.status(400).send({
         message:"user id passed is not vaild user id "
     })
  }
 //check password is correct
-const ispasswordvalid=bcrypt.comparesync(req.body.password,user.password)
+const ispasswordvalid=bcrypt.compareSync(req.body.password,user.password)
 if(!ispasswordvalid){
    return res.status(401).send({
         message:"worng password passed"

@@ -1,4 +1,5 @@
-const {verify}= require("jsonwebtoken")
+const jwt= require("jsonwebtoken")
+
 
 const user_model=require("../models/user.model")
 const varifysignupBody= async(req,res,next)=>{
@@ -41,6 +42,28 @@ return res.status(400).send({
             })
     }
 }
+const varifysigninBody= async(req,res,next)=>{
+    if (!req.body.userId){
+        return res.status(400).send({
+            message:"user id is not provided"
+        })
+    }
+    if (!req.body.password){
+         return res.status(400).send({
+            message:"password is not provided"
+      })
+    }
+    next()
+}
+const verifytoken=(req,res,next)=>{
+const token =req.headers['x-access -token ']
+if(!token){
+  return res.status(400).send({
+    message:"no token found :unauthorized"
+  })
+}
+}
 module.exports={
-    varifysignupBody:varifysignupBody
+    varifysignupBody:varifysignupBody,
+    varifysigninBody:varifysigninBody
 }

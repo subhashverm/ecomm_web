@@ -45,6 +45,7 @@ db.once("open",()=>{
  * stich the rout the server 
  */
 require("./routes/auth.route")(app)
+require("./routes/category.routes")(app)
 /**
  * 
  * start the  server
