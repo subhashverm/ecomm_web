@@ -30,7 +30,6 @@ catch(err){
 
     })
 }
-
 //return the responce of the created category
 
 }

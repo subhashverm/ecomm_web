@@ -1,4 +1,5 @@
 const jwt= require("jsonwebtoken")
+ const auth_configs=require("../configs/auth.config")
 
 
 const user_model=require("../models/user.model")
@@ -55,15 +56,46 @@ const varifysigninBody= async(req,res,next)=>{
     }
     next()
 }
-const verifytoken=(req,res,next)=>{
+const varifytoken=(req,res,next)=>{
 const token =req.headers['x-access -token ']
+
 if(!token){
-  return res.status(400).send({
+  return res.status(403).send({
     message:"no token found :unauthorized"
   })
 }
+jwt.verify(token,auth_configs.secret, async(err,decoded)=>{
+    if(err){
+        return res.status(401).send({
+            message:"unauthorized!"
+        })
+    }
+    const user= await user_model.findOne({userId:decoded.id})
+    if(!user){
+     return res.status(400).send({
+        message:"unauthorized,this user for the token doesn't exit "
+     })
+        }
+        req.user=user
+        next()
+
+})
+
+}
+const isadmin=(req,res,next)=>{
+    const user=req.user
+    if(user && userType=="ADMIN"){
+next()
+    }else{
+        return res.status(400).send({
+            message:"only admin are allowed to access this end point "
+        })
+    }
+
 }
 module.exports={
     varifysignupBody:varifysignupBody,
-    varifysigninBody:varifysigninBody
+    varifysigninBody:varifysigninBody,
+    varifytoken:varifytoken,
+    isadmin:isadmin
 }
